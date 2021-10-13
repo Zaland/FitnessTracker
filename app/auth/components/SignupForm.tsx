@@ -48,7 +48,6 @@ export const SignupForm = (props: SignupFormProps) => {
   })
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik
-  console.log(getFieldProps("password"))
 
   return (
     <Container component="main" maxWidth="xs">
