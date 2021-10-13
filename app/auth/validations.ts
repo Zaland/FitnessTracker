@@ -9,7 +9,7 @@ export const Signup = z.object({
 
 export const Login = z.object({
   email: z.string().email(),
-  password: z.string(),
+  password: z.string().min(1, { message: "Please enter a password" }),
 })
 
 export const ForgotPassword = z.object({
