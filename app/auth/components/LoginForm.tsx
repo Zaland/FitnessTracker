@@ -32,7 +32,7 @@ export const LoginForm = (props: LoginFormProps) => {
   const formik = useFormik<InitialValues>({
     initialValues: { email: "", password: "" },
     validate: validateZodSchema(Login),
-    onSubmit: async (values, { setSubmitting, setErrors }) => {
+    onSubmit: async (values, { setErrors }) => {
       try {
         await loginMutation(values)
         props.onSuccess?.()
