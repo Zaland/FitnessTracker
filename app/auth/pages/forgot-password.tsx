@@ -23,7 +23,6 @@ const ForgotPasswordPage: BlitzPage = () => {
     initialValues: { email: "" },
     validate: validateZodSchema(ForgotPassword),
     onSubmit: async (values, { setErrors }) => {
-      console.log("in here")
       try {
         await forgotPasswordMutation(values)
       } catch (error: any) {
