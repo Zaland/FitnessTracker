@@ -102,7 +102,7 @@ export const SignupForm = (props: SignupFormProps) => {
 
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link href={Routes.SignupPage().pathname} variant="body2" underline="none">
+            <Link href={Routes.LoginPage().pathname} variant="body2" underline="none">
               Login
             </Link>
           </Grid>
