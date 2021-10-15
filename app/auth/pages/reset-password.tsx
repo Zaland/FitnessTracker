@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import {
+  Grid,
   Avatar,
   CssBaseline,
   TextField,
@@ -67,7 +68,7 @@ const ResetPasswordPage: BlitzPage = () => {
           <FitnessCenter />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Set a new password
+          Reset password
         </Typography>
 
         {isSuccess ? (
@@ -113,6 +114,13 @@ const ResetPasswordPage: BlitzPage = () => {
               >
                 reset password
               </LoadingButton>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href={Routes.LoginPage().pathname} variant="body2" underline="none">
+                    Return to login
+                  </Link>
+                </Grid>
+              </Grid>
             </Form>
           </FormikProvider>
         )}
@@ -122,6 +130,6 @@ const ResetPasswordPage: BlitzPage = () => {
 }
 
 ResetPasswordPage.redirectAuthenticatedTo = "/"
-ResetPasswordPage.getLayout = (page) => <Layout title="Reset Your Password">{page}</Layout>
+ResetPasswordPage.getLayout = (page) => <Layout title="Reset password">{page}</Layout>
 
 export default ResetPasswordPage

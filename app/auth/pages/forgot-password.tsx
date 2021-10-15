@@ -1,4 +1,5 @@
 import {
+  Grid,
   Avatar,
   CssBaseline,
   TextField,
@@ -48,7 +49,7 @@ const ForgotPasswordPage: BlitzPage = () => {
           <FitnessCenter />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Forgot your password?
+          Forgot password
         </Typography>
 
         {isSuccess ? (
@@ -88,6 +89,13 @@ const ForgotPasswordPage: BlitzPage = () => {
               >
                 reset password
               </LoadingButton>
+              <Grid container justifyContent="flex-end">
+                <Grid item>
+                  <Link href={Routes.LoginPage().pathname} variant="body2" underline="none">
+                    Return to login
+                  </Link>
+                </Grid>
+              </Grid>
             </Form>
           </FormikProvider>
         )}
@@ -97,6 +105,6 @@ const ForgotPasswordPage: BlitzPage = () => {
 }
 
 ForgotPasswordPage.redirectAuthenticatedTo = "/"
-ForgotPasswordPage.getLayout = (page) => <Layout title="Forgot your password?">{page}</Layout>
+ForgotPasswordPage.getLayout = (page) => <Layout title="Forgot password">{page}</Layout>
 
 export default ForgotPasswordPage
