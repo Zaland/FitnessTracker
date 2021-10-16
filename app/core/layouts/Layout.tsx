@@ -1,10 +1,35 @@
 import { ReactNode } from "react"
 import { Head } from "blitz"
+import { CssBaseline } from "@mui/material"
+import { ThemeProvider, createTheme } from "@mui/material/styles"
 
 type LayoutProps = {
   title?: string
   children: ReactNode
 }
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#008AF1",
+    },
+    secondary: {
+      main: "#49B35D",
+    },
+    background: {
+      default: "#DADADA",
+    },
+  },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        contained: {
+          fontWeight: 600,
+        },
+      },
+    },
+  },
+})
 
 const Layout = ({ title, children }: LayoutProps) => {
   return (
@@ -14,7 +39,10 @@ const Layout = ({ title, children }: LayoutProps) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {children}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </ThemeProvider>
     </>
   )
 }
