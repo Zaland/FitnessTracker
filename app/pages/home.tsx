@@ -1,8 +1,9 @@
 import { BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
+import Navbar from "app/core/components/Navbar"
 
 const HomePage: BlitzPage = () => {
-  return <div>test</div>
+  return <Navbar />
 }
 
 HomePage.authenticate = { redirectTo: Routes.LoginPage() }
