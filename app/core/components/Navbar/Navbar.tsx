@@ -66,7 +66,7 @@ export const Navbar = () => {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open} drawerWidth={240}>
+      <Drawer variant="permanent" open={open} width={240}>
         <DrawerHeader>
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />

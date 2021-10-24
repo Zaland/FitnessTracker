@@ -3,11 +3,11 @@ import MuiDrawer, { DrawerProps as MuiDrawerProps } from "@mui/material/Drawer"
 
 interface DrawerProps extends MuiDrawerProps {
   theme?: Theme
-  drawerWidth: number
+  width: number
 }
 
-const openedMixin = (theme: Theme, drawerWidth: number): CSSObject => ({
-  width: drawerWidth,
+const openedMixin = (theme: Theme, width: number): CSSObject => ({
+  width: width,
   transition: theme.transitions.create("width", {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -35,14 +35,14 @@ export const DrawerHeader = styled("div")(({ theme }) => ({
 
 export const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
-})<DrawerProps>(({ theme, open, drawerWidth = 240 }) => ({
-  width: drawerWidth,
+})<DrawerProps>(({ theme, open, width = 240 }) => ({
+  width,
   flexShrink: 0,
   whiteSpace: "nowrap",
   boxSizing: "border-box",
   ...(open && {
-    ...openedMixin(theme, drawerWidth),
-    "& .MuiDrawer-paper": openedMixin(theme, drawerWidth),
+    ...openedMixin(theme, width),
+    "& .MuiDrawer-paper": openedMixin(theme, width),
   }),
   ...(!open && {
     ...closedMixin(theme),
