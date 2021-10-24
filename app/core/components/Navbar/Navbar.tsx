@@ -3,7 +3,7 @@ import {
   Box,
   Toolbar,
   List,
-  ListItemButton,
+  ListItemButton as MuiListItemButton,
   ListItemIcon,
   ListItemText,
   CssBaseline,
@@ -18,10 +18,38 @@ import {
   Person as PersonIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material"
+import { styled } from "@mui/material/styles"
 import { Routes, useMutation, useRouter } from "blitz"
 import { AppBar } from "./AppBar"
 import { Drawer, DrawerHeader } from "./Drawer"
 import logout from "app/auth/mutations/logout"
+
+const listItems = [
+  { label: "home", icon: <HomeIcon />, route: Routes.HomePage() },
+  { label: "profile", icon: <PersonIcon />, route: Routes.ProfilePage() },
+]
+
+const ListItemButton = styled(MuiListItemButton)(({ theme }) => ({
+  textTransform: "capitalize",
+  "&.Mui-selected": {
+    backgroundColor: theme.palette.primary.main,
+    color: "white",
+    ".listIcon": {
+      color: "white",
+    },
+    "&:hover": {
+      backgroundColor: theme.palette.primary.light,
+      color: "white",
+    },
+  },
+  "&:hover": {
+    backgroundColor: theme.palette.primary.light,
+    color: "white",
+    ".listIcon": {
+      color: "white",
+    },
+  },
+}))
 
 export const Navbar = ({ children }: { children?: ReactNode }) => {
   const [open, setOpen] = useState(true)
@@ -70,21 +98,19 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
         </DrawerHeader>
         <Divider />
         <List>
-          <ListItemButton key="home" onClick={() => router.push(Routes.HomePage())}>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText primary="home" />
-          </ListItemButton>
-          <ListItemButton key="profile" onClick={() => router.push(Routes.ProfilePage())}>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText primary="profile" />
-          </ListItemButton>
+          {listItems.map(({ label, icon, route }) => (
+            <ListItemButton
+              key={label}
+              onClick={() => router.push(route)}
+              selected={router.pathname === route.pathname}
+            >
+              <ListItemIcon className="listIcon">{icon}</ListItemIcon>
+              <ListItemText primary={label} />
+            </ListItemButton>
+          ))}
           <Divider />
           <ListItemButton key="logout" onClick={handleLogout}>
-            <ListItemIcon>
+            <ListItemIcon className="listIcon">
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="logout" />
