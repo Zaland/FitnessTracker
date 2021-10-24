@@ -9,12 +9,20 @@ export type LayoutProps = {
 }
 
 const theme = createTheme({
+  typography: {
+    fontFamily: "Roboto, sans-serif",
+    fontSize: 13,
+  },
   palette: {
     primary: {
-      main: "#008AF1",
+      dark: "#001970",
+      main: "#303F9F",
+      light: "#666AD1",
     },
     secondary: {
-      main: "#F16800",
+      dark: "#004B70",
+      main: "#30779F",
+      light: "#66A6D0",
     },
     background: {
       default: "#DADADA",
@@ -37,6 +45,10 @@ const Layout = ({ title, children }: LayoutProps) => {
       <Head>
         <title>{title || "FitnessTracker"}</title>
         <link rel="icon" href="/favicon.ico" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;1,100;1,300;1,400;1,500;1,700&display=swap"
+          rel="stylesheet"
+        />
       </Head>
 
       <ThemeProvider theme={theme}>
