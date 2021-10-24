@@ -3,7 +3,7 @@ import { Head } from "blitz"
 import { CssBaseline } from "@mui/material"
 import { ThemeProvider, createTheme } from "@mui/material/styles"
 
-type LayoutProps = {
+export type LayoutProps = {
   title?: string
   children: ReactNode
 }
@@ -14,7 +14,7 @@ const theme = createTheme({
       main: "#008AF1",
     },
     secondary: {
-      main: "#49B35D",
+      main: "#F16800",
     },
     background: {
       default: "#DADADA",

@@ -1,9 +1,9 @@
-import { useState } from "react"
+import { useState, ReactNode } from "react"
 import {
   Box,
   Toolbar,
   List,
-  ListItem,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   CssBaseline,
@@ -18,19 +18,15 @@ import {
   Person as PersonIcon,
   Logout as LogoutIcon,
 } from "@mui/icons-material"
-import { Routes, useMutation } from "blitz"
+import { Routes, useMutation, useRouter } from "blitz"
 import { AppBar } from "./AppBar"
 import { Drawer, DrawerHeader } from "./Drawer"
 import logout from "app/auth/mutations/logout"
 
-const listItems = [
-  { label: "home", icon: <HomeIcon />, route: Routes.HomePage().pathname },
-  { label: "person", icon: <PersonIcon />, route: Routes.ProfilePage().pathname },
-]
-
-export const Navbar = () => {
+export const Navbar = ({ children }: { children?: ReactNode }) => {
   const [open, setOpen] = useState(true)
   const [logoutMutation] = useMutation(logout)
+  const router = useRouter()
 
   const handleDrawerOpen = () => {
     setOpen(true)
@@ -74,46 +70,30 @@ export const Navbar = () => {
         </DrawerHeader>
         <Divider />
         <List>
-          {listItems.map(({ label, icon, route }) => (
-            <ListItem button key={label} href={route}>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItem>
-          ))}
+          <ListItemButton key="home" onClick={() => router.push(Routes.HomePage())}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="home" />
+          </ListItemButton>
+          <ListItemButton key="profile" onClick={() => router.push(Routes.ProfilePage())}>
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText primary="profile" />
+          </ListItemButton>
           <Divider />
-          <ListItem button key="logout" onClick={handleLogout}>
+          <ListItemButton key="logout" onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
             <ListItemText primary="logout" />
-          </ListItem>
+          </ListItemButton>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-          ut labore et dolore magna aliqua. Rhoncus dolor purus non enim praesent elementum
-          facilisis leo vel. Risus at ultrices mi tempus imperdiet. Semper risus in hendrerit
-          gravida rutrum quisque non tellus. Convallis convallis tellus id interdum velit laoreet id
-          donec ultrices. Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra nibh cras.
-          Metus vulputate eu scelerisque felis imperdiet proin fermentum leo. Mauris commodo quis
-          imperdiet massa tincidunt. Cras tincidunt lobortis feugiat vivamus at augue. At augue eget
-          arcu dictum varius duis at consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem
-          donec massa sapien faucibus et molestie ac.
-        </Typography>
-        <Typography paragraph>
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper eget nulla
-          facilisi etiam dignissim diam. Pulvinar elementum integer enim neque volutpat ac
-          tincidunt. Ornare suspendisse sed nisi lacus sed viverra tellus. Purus sit amet volutpat
-          consequat mauris. Elementum eu facilisis sed odio morbi. Euismod lacinia at quis risus sed
-          vulputate odio. Morbi tincidunt ornare massa eget egestas purus viverra accumsan in. In
-          hendrerit gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem et
-          tortor. Habitant morbi tristique senectus et. Adipiscing elit duis tristique sollicitudin
-          nibh sit. Ornare aenean euismod elementum nisi quis eleifend. Commodo viverra maecenas
-          accumsan lacus vel facilisis. Nulla posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+        {children}
       </Box>
     </Box>
   )
