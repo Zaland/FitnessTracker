@@ -9,7 +9,7 @@ type LoginFormProps = {
   onSuccess?: () => void
 }
 
-type InitialValues = {
+type FormValues = {
   email: string
   password: string
   afterSubmit?: string
@@ -18,14 +18,14 @@ type InitialValues = {
 export const LoginForm = (props: LoginFormProps) => {
   const [loginMutation] = useMutation(login)
 
-  const formik = useFormik<InitialValues>({
+  const formik = useFormik<FormValues>({
     initialValues: { email: "", password: "" },
     validate: validateZodSchema(Login),
     onSubmit: async (values, { setErrors }) => {
       try {
         await loginMutation(values)
         props.onSuccess?.()
-      } catch (error: any) {
+      } catch (error) {
         if (error instanceof AuthenticationError) {
           setErrors({ afterSubmit: "Sorry, those credentials are invalid" })
         } else {

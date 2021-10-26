@@ -9,7 +9,7 @@ type SignupFormProps = {
   onSuccess?: () => void
 }
 
-type InitialValues = {
+type FormValues = {
   email: string
   password: string
   afterSubmit?: string
@@ -18,14 +18,14 @@ type InitialValues = {
 export const SignupForm = (props: SignupFormProps) => {
   const [signupMutation] = useMutation(signup)
 
-  const formik = useFormik<InitialValues>({
+  const formik = useFormik<FormValues>({
     initialValues: { email: "", password: "" },
     validate: validateZodSchema(Signup),
     onSubmit: async (values, { setErrors }) => {
       try {
         await signupMutation(values)
         props.onSuccess?.()
-      } catch (error: any) {
+      } catch (error) {
         if (error.code === "P2002" && error.meta?.target?.includes("email")) {
           // This error comes from Prisma
           setErrors({ afterSubmit: "This email is already being used" })

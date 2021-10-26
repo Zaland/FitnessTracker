@@ -15,7 +15,7 @@ const ForgotPasswordPage: BlitzPage = () => {
     onSubmit: async (values, { setErrors }) => {
       try {
         await forgotPasswordMutation(values)
-      } catch (error: any) {
+      } catch (error) {
         setErrors({ afterSubmit: "Sorry, we had an unexpected error. Please try again." })
       }
     },
