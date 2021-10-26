@@ -17,6 +17,7 @@ import {
   Home as HomeIcon,
   Person as PersonIcon,
   Logout as LogoutIcon,
+  FitnessCenter as FitnessCenterIcon,
 } from "@mui/icons-material"
 import { styled } from "@mui/material/styles"
 import { Routes, useMutation, useRouter } from "blitz"
@@ -85,13 +86,27 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography noWrap component="div" sx={{ fontWeight: 600, fontSize: 18 }}>
-            FitnessTracker
-          </Typography>
+          {!open && (
+            <Typography noWrap component="div" sx={{ fontWeight: 600, fontSize: 18 }}>
+              <FitnessCenterIcon htmlColor="white" sx={{ mb: -0.5, mr: 1 }} />
+              FitnessTracker
+            </Typography>
+          )}
         </Toolbar>
       </AppBar>
       <Drawer variant="permanent" open={open} width={240}>
         <DrawerHeader>
+          {open && (
+            <Typography
+              noWrap
+              component="div"
+              color="primary"
+              sx={{ fontWeight: 600, fontSize: 18 }}
+            >
+              <FitnessCenterIcon color="primary" sx={{ mb: -0.5, mr: 1 }} />
+              FitnessTracker
+            </Typography>
+          )}
           <IconButton onClick={handleDrawerClose}>
             <ChevronLeftIcon />
           </IconButton>
