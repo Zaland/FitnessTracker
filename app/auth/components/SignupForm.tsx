@@ -40,6 +40,7 @@ export const SignupForm = (props: SignupFormProps) => {
 
   return (
     <Container
+      fixed
       maxWidth="sm"
       sx={{
         minHeight: "90vh",
@@ -49,7 +50,7 @@ export const SignupForm = (props: SignupFormProps) => {
       }}
     >
       <Grid container justifyContent="center" alignItems="center">
-        <Paper elevation={3} sx={{ padding: 3 }}>
+        <Paper elevation={3} sx={{ padding: 3, width: "100%" }}>
           <Typography component="h1" variant="h5" align="center">
             Signup
           </Typography>
