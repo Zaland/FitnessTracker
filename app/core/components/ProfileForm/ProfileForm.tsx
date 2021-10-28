@@ -1,29 +1,34 @@
+import { useState } from "react"
 import { TextField, Grid, Typography, Container, Alert, Paper } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
-import { validateZodSchema } from "blitz"
+import { validateZodSchema, useQuery, useMutation } from "blitz"
 import { Form, FormikProvider, useFormik } from "formik"
-import { z } from "zod"
-
-const UpdateProfile = z.object({
-  fullName: z.optional(z.string()),
-})
+import { ProfileForm as UpdateForm } from "app/core/validations"
+import getCurrentUser from "app/users/queries/getCurrentUser"
+import updateUser from "app/core/mutations/updateUser"
 
 type ProfileFormProps = {
   onSuccess?: () => void
 }
 
 type FormValues = {
-  fullName?: string
+  name?: string
   afterSubmit?: string
 }
 
 export const ProfileForm = (props: ProfileFormProps) => {
+  const [success, setSuccess] = useState(false)
+  const [user, { setQueryData }] = useQuery(getCurrentUser, null)
+  const [updateUserMutation] = useMutation(updateUser)
+
   const formik = useFormik<FormValues>({
-    initialValues: { fullName: "" },
-    validate: validateZodSchema(UpdateProfile),
-    onSubmit: async (_values, { setErrors }) => {
+    initialValues: { name: user?.name || "asd" },
+    validate: validateZodSchema(UpdateForm),
+    onSubmit: async (values, { setErrors }) => {
       try {
-        console.log("Success updating")
+        const newValues = await updateUserMutation(values)
+        setQueryData(newValues)
+        setSuccess(true)
         props.onSuccess?.()
       } catch (error) {
         setErrors({ afterSubmit: "Sorry, something went wrong" })
@@ -43,14 +48,15 @@ export const ProfileForm = (props: ProfileFormProps) => {
 
           <FormikProvider value={formik}>
             <Form noValidate onSubmit={handleSubmit}>
+              {success && <Alert onClose={() => setSuccess(false)}>Successfully updated!</Alert>}
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               <TextField
                 margin="normal"
                 fullWidth
                 label="Full Name"
-                {...getFieldProps("fullName")}
-                error={Boolean(touched.fullName && errors.fullName)}
-                helperText={touched.fullName && errors.fullName}
+                {...getFieldProps("name")}
+                error={Boolean(touched.name && errors.name)}
+                helperText={touched.name && errors.name}
               />
               <LoadingButton
                 loading={isSubmitting}
