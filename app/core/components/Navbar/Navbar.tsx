@@ -82,6 +82,9 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
             sx={{
               marginRight: "36px",
               ...(open && { display: "none" }),
+              "&:hover": {
+                backgroundColor: "primary.dark",
+              },
             }}
           >
             <MenuIcon />
@@ -107,7 +110,10 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
               FitnessTracker
             </Typography>
           )}
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton
+            onClick={handleDrawerClose}
+            sx={{ "&:hover": { backgroundColor: "primary.light", color: "white" } }}
+          >
             <ChevronLeftIcon />
           </IconButton>
         </DrawerHeader>
