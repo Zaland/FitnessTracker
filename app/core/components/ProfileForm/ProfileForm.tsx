@@ -22,7 +22,7 @@ export const ProfileForm = (props: ProfileFormProps) => {
   const [updateUserMutation] = useMutation(updateUser)
 
   const formik = useFormik<FormValues>({
-    initialValues: { name: user?.name || "asd" },
+    initialValues: { name: user?.name || "" },
     validate: validateZodSchema(UpdateForm),
     onSubmit: async (values, { setErrors }) => {
       try {
@@ -50,6 +50,13 @@ export const ProfileForm = (props: ProfileFormProps) => {
             <Form noValidate onSubmit={handleSubmit}>
               {success && <Alert onClose={() => setSuccess(false)}>Successfully updated!</Alert>}
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
+              <TextField
+                margin="normal"
+                fullWidth
+                disabled
+                label="Email"
+                value={user?.email || ""}
+              />
               <TextField
                 margin="normal"
                 fullWidth
