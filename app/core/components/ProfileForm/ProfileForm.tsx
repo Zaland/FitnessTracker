@@ -26,6 +26,8 @@ export const ProfileForm = (props: ProfileFormProps) => {
     validate: validateZodSchema(UpdateForm),
     onSubmit: async (values, { setErrors }) => {
       try {
+        if (values.name === user?.name) return
+
         const newValues = await updateUserMutation(values)
         setQueryData(newValues)
         setSuccess(true)
