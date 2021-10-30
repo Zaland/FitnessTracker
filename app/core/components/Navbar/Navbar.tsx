@@ -12,28 +12,35 @@ import {
   IconButton,
   SwipeableDrawer,
 } from "@mui/material"
-import {
-  Menu as MenuIcon,
-  ChevronLeft as ChevronLeftIcon,
-  Home as HomeIcon,
-  Person as PersonIcon,
-  Logout as LogoutIcon,
-  FitnessCenter as FitnessCenterIcon,
-} from "@mui/icons-material"
 import { styled } from "@mui/material/styles"
 import { Routes, useMutation, useRouter } from "blitz"
 import { AppBar } from "./AppBar"
 import { Drawer, DrawerHeader } from "./Drawer"
 import { useWidth } from "app/core/hooks/useWidth"
 import logout from "app/auth/mutations/logout"
+import {
+  ArrowLeft as ArrowLeftIcon,
+  House as HouseIcon,
+  Logout as LogoutIcon,
+  Menu as MenuIcon,
+  ProfileCircle as ProfileIcon,
+  Weight as WeightIcon,
+} from "app/assets/icons"
 
 const listItems = [
-  { label: "home", icon: <HomeIcon />, route: Routes.HomePage() },
-  { label: "profile", icon: <PersonIcon />, route: Routes.ProfilePage() },
+  { label: "home", icon: <HouseIcon />, route: Routes.HomePage() },
+  {
+    label: "profile",
+    icon: <ProfileIcon />,
+    route: Routes.ProfilePage(),
+  },
 ]
 
 const ListItemButton = styled(MuiListItemButton)(({ theme }) => ({
   textTransform: "capitalize",
+  ".listIcon": {
+    color: "black",
+  },
   "&.Mui-selected": {
     backgroundColor: theme.palette.primary.main,
     color: "white",
@@ -87,15 +94,15 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
       <DrawerHeader>
         {open && (
           <Typography noWrap component="div" color="primary" sx={{ fontWeight: 600, fontSize: 18 }}>
-            <FitnessCenterIcon color="primary" sx={{ mb: -0.5, mr: 1 }} />
+            <WeightIcon color="primary" sx={{ mb: -0.5, mr: 1 }} />
             FitnessTracker
           </Typography>
         )}
         <IconButton
           onClick={handleDrawerClose}
-          sx={{ "&:hover": { backgroundColor: "primary.light", color: "white" } }}
+          sx={{ color: "black", "&:hover": { backgroundColor: "primary.light", color: "white" } }}
         >
-          <ChevronLeftIcon />
+          <ArrowLeftIcon />
         </IconButton>
       </DrawerHeader>
       <Divider />
@@ -143,7 +150,7 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
           </IconButton>
           {!open && (
             <Typography noWrap component="div" sx={{ fontWeight: 600, fontSize: 18 }}>
-              <FitnessCenterIcon htmlColor="white" sx={{ mb: -0.5, mr: 1 }} />
+              <WeightIcon htmlColor="white" sx={{ mb: -0.5, mr: 1 }} />
               FitnessTracker
             </Typography>
           )}
