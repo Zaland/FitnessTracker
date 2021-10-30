@@ -23,6 +23,7 @@ type ProfileFormProps = {
 }
 
 type FormValues = {
+  email: string
   name?: string
 }
 
@@ -33,18 +34,23 @@ export const ProfileForm = (props: ProfileFormProps) => {
   const [updateUserMutation] = useMutation(updateUser)
 
   const formik = useFormik<FormValues>({
-    initialValues: { name: user?.name || "" },
+    initialValues: { email: user?.email || "", name: user?.name || "" },
     validate: validateZodSchema(UpdateForm),
-    onSubmit: async (values) => {
+    onSubmit: async (values, { setErrors }) => {
       try {
-        if (values.name === user?.name) return
+        if (values.name === user?.name && values.email === user?.email) return
 
         const newValues = await updateUserMutation(values)
         setQueryData(newValues)
         handleOpen("success", "Successfully updated.")
         props.onSuccess?.()
       } catch (error) {
-        handleOpen("error", "Sorry, something went wrong.")
+        if (error.name === "EmailTakenError") {
+          setErrors({ email: error.message })
+          handleOpen("error", error.message)
+        } else {
+          handleOpen("error", "Sorry, something went wrong.")
+        }
       }
     },
   })
@@ -83,9 +89,17 @@ export const ProfileForm = (props: ProfileFormProps) => {
                 <TextField
                   margin="normal"
                   fullWidth
-                  disabled
                   label="Email"
-                  value={user?.email || ""}
+                  {...getFieldProps("email")}
+                  error={Boolean(errors.email)}
+                  helperText={errors.email}
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {isSubmitting && touched.email && <CircularProgress size={20} />}
+                      </InputAdornment>
+                    ),
+                  }}
                 />
                 <TextField
                   margin="normal"
@@ -97,7 +111,7 @@ export const ProfileForm = (props: ProfileFormProps) => {
                   InputProps={{
                     endAdornment: (
                       <InputAdornment position="end">
-                        {isSubmitting && <CircularProgress size={20} />}
+                        {isSubmitting && touched.name && <CircularProgress size={20} />}
                       </InputAdornment>
                     ),
                   }}
