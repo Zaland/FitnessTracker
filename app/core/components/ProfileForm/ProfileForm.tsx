@@ -1,9 +1,19 @@
 import { useState } from "react"
-import { TextField, Grid, Typography, Container, Alert, Paper } from "@mui/material"
+import {
+  TextField,
+  Grid,
+  Typography,
+  Container,
+  Alert,
+  Paper,
+  CircularProgress,
+  InputAdornment,
+} from "@mui/material"
 import { LoadingButton } from "@mui/lab"
 import { validateZodSchema, useQuery, useMutation } from "blitz"
 import { Form, FormikProvider, useFormik } from "formik"
 import { ProfileForm as UpdateForm } from "app/core/validations"
+import { AutoSave } from "app/core/components/Form"
 import getCurrentUser from "app/users/queries/getCurrentUser"
 import updateUser from "app/core/mutations/updateUser"
 
@@ -50,6 +60,7 @@ export const ProfileForm = (props: ProfileFormProps) => {
 
           <FormikProvider value={formik}>
             <Form noValidate onSubmit={handleSubmit}>
+              <AutoSave debounceMs={2000} />
               {success && <Alert onClose={() => setSuccess(false)}>Successfully updated!</Alert>}
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               <TextField
@@ -66,6 +77,13 @@ export const ProfileForm = (props: ProfileFormProps) => {
                 {...getFieldProps("name")}
                 error={Boolean(touched.name && errors.name)}
                 helperText={touched.name && errors.name}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      {isSubmitting && <CircularProgress size={20} />}
+                    </InputAdornment>
+                  ),
+                }}
               />
               <LoadingButton
                 loading={isSubmitting}
