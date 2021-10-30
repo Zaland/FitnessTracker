@@ -11,7 +11,9 @@ export const AutoSave = ({ debounceMs }) => {
     [debounceMs, submitForm]
   )
 
-  useEffect(() => debouncedSave(), [debouncedSave, values])
+  useEffect(() => {
+    debouncedSave()
+  }, [debouncedSave, values])
 
   return null
 }
