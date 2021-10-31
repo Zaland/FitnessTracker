@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   TextField,
   Grid,
@@ -23,7 +23,7 @@ type ProfileFormProps = {
 }
 
 type FormValues = {
-  email: string
+  email?: string
   name?: string
 }
 
@@ -36,11 +36,27 @@ export const ProfileForm = (props: ProfileFormProps) => {
   const formik = useFormik<FormValues>({
     initialValues: { email: user?.email || "", name: user?.name || "" },
     validate: validateZodSchema(UpdateForm),
-    onSubmit: async (values, { setErrors }) => {
+    onSubmit: async (values, { setFieldTouched, setErrors }) => {
       try {
-        if (values.name === user?.name && values.email === user?.email) return
+        const valuesToUpdate: FormValues = {}
 
-        const newValues = await updateUserMutation(values)
+        if (values.email !== user?.email) {
+          setFieldTouched("email", true)
+          valuesToUpdate.email = values.email
+        } else {
+          setFieldTouched("email", false)
+        }
+
+        if (values.name !== user?.name) {
+          setFieldTouched("name", true)
+          valuesToUpdate.name = values.name
+        } else {
+          setFieldTouched("name", false)
+        }
+
+        if (!valuesToUpdate?.name && !valuesToUpdate?.email) return
+
+        const newValues = await updateUserMutation(valuesToUpdate)
         setQueryData(newValues)
         handleOpen("success", "Successfully updated.")
         props.onSuccess?.()
