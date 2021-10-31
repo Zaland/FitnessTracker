@@ -61,10 +61,7 @@ export const ProfileForm = (props: ProfileFormProps) => {
     setToaster({ type, message })
     setOpen(true)
   }
-  const handleClose = () => {
-    setToaster({ type: "", message: "" })
-    setOpen(false)
-  }
+  const handleClose = () => setOpen(false)
 
   return (
     <>
