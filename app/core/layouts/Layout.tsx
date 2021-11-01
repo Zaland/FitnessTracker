@@ -1,45 +1,19 @@
 import { ReactNode } from "react"
 import { Head } from "blitz"
 import { CssBaseline } from "@mui/material"
-import { ThemeProvider, createTheme } from "@mui/material/styles"
+import { useTheme, ThemeProvider } from "@mui/material/styles"
+import { generateTheme } from "./theme"
 
 export type LayoutProps = {
   title?: string
+  darkMode?: boolean
   children: ReactNode
 }
 
-const theme = createTheme({
-  typography: {
-    fontFamily: "Roboto, sans-serif",
-    fontSize: 13,
-  },
-  palette: {
-    primary: {
-      dark: "#000A61",
-      main: "#343090",
-      light: "#685AC1",
-    },
-    secondary: {
-      dark: "#1F64C8",
-      main: "#6491FC",
-      light: "#9BC1FF",
-    },
-    background: {
-      default: "#DADADA",
-    },
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        contained: {
-          fontWeight: 600,
-        },
-      },
-    },
-  },
-})
+const Layout = ({ title, darkMode = false, children }: LayoutProps) => {
+  const theme = useTheme()
+  const newTheme = generateTheme(theme, darkMode)
 
-const Layout = ({ title, children }: LayoutProps) => {
   return (
     <>
       <Head>
@@ -51,7 +25,7 @@ const Layout = ({ title, children }: LayoutProps) => {
         />
       </Head>
 
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={newTheme}>
         <CssBaseline />
         {children}
       </ThemeProvider>

@@ -3,7 +3,7 @@ import {
   Box,
   Toolbar,
   List,
-  ListItemButton as MuiListItemButton,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   CssBaseline,
@@ -12,7 +12,6 @@ import {
   IconButton,
   SwipeableDrawer,
 } from "@mui/material"
-import { styled } from "@mui/material/styles"
 import { Routes, useMutation, useRouter } from "blitz"
 import { AppBar } from "./AppBar"
 import { Drawer, DrawerHeader } from "./Drawer"
@@ -23,9 +22,17 @@ import {
   House as HouseIcon,
   Logout as LogoutIcon,
   Menu as MenuIcon,
+  Moon as MoonIcon,
   ProfileCircle as ProfileIcon,
+  Sun as SunIcon,
   Weight as WeightIcon,
 } from "app/assets/icons"
+
+export type NavbarProps = {
+  darkMode: boolean
+  onThemeChange: () => void
+  children: ReactNode
+}
 
 const listItems = [
   { label: "home", icon: <HouseIcon />, route: Routes.HomePage() },
@@ -36,32 +43,7 @@ const listItems = [
   },
 ]
 
-const ListItemButton = styled(MuiListItemButton)(({ theme }) => ({
-  textTransform: "capitalize",
-  ".listIcon": {
-    color: "black",
-  },
-  "&.Mui-selected": {
-    backgroundColor: theme.palette.primary.main,
-    color: "white",
-    ".listIcon": {
-      color: "white",
-    },
-    "&:hover": {
-      backgroundColor: theme.palette.primary.light,
-      color: "white",
-    },
-  },
-  "&:hover": {
-    backgroundColor: theme.palette.primary.light,
-    color: "white",
-    ".listIcon": {
-      color: "white",
-    },
-  },
-}))
-
-export const Navbar = ({ children }: { children?: ReactNode }) => {
+export const Navbar = ({ darkMode, onThemeChange, children }: NavbarProps) => {
   const [open, setOpen] = useState(false)
   const [logoutMutation] = useMutation(logout)
   const router = useRouter()
@@ -100,9 +82,14 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
         )}
         <IconButton
           onClick={handleDrawerClose}
-          sx={{ color: "black", "&:hover": { backgroundColor: "primary.light", color: "white" } }}
+          sx={{
+            "&:hover": {
+              backgroundColor: darkMode ? "primary.dark" : "primary.light",
+              color: "white",
+            },
+          }}
         >
-          <ArrowLeftIcon />
+          <ArrowLeftIcon className="listIcon" />
         </IconButton>
       </DrawerHeader>
       <Divider />
@@ -141,9 +128,6 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
             sx={{
               marginRight: "36px",
               ...(open && { display: "none" }),
-              "&:hover": {
-                backgroundColor: "primary.dark",
-              },
             }}
           >
             <MenuIcon />
@@ -154,6 +138,10 @@ export const Navbar = ({ children }: { children?: ReactNode }) => {
               FitnessTracker
             </Typography>
           )}
+          <div style={{ flexGrow: 1 }} />
+          <IconButton onClick={onThemeChange} color="inherit">
+            {darkMode ? <SunIcon /> : <MoonIcon />}
+          </IconButton>
         </Toolbar>
       </AppBar>
       {width === "xs" ? (
