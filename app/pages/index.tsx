@@ -7,7 +7,6 @@ const Route = () => {
   const session = useSession()
 
   useEffect(() => {
-    console.log({ session })
     if (session.userId) {
       router.push(Routes.HomePage())
     } else {

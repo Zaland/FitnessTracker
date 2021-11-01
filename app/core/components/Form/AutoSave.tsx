@@ -4,7 +4,6 @@ import { useFormikContext } from "formik"
 
 export const AutoSave = ({ debounceMs }) => {
   const { values, submitForm } = useFormikContext()
-  console.log({ values })
 
   const debouncedSave = useCallback(
     debounce(() => submitForm(), debounceMs),
