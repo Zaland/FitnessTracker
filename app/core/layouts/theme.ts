@@ -1,7 +1,31 @@
-import { createTheme, Theme } from "@mui/material"
+import { createTheme } from "@mui/material"
+import { deepPurple, lime } from "@mui/material/colors"
 
-export const generateTheme = (theme: Theme, darkMode: boolean) =>
-  createTheme({
+export const generateTheme = (darkMode: boolean) => {
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: deepPurple[500],
+      },
+      secondary: {
+        main: lime[600],
+      },
+    },
+  })
+
+  return createTheme({
+    palette: {
+      mode: darkMode ? "dark" : "light",
+      primary: {
+        main: darkMode ? deepPurple[400] : deepPurple[500],
+      },
+      secondary: {
+        main: lime[600],
+      },
+      background: {
+        default: darkMode ? "#121212" : "#DADADA",
+      },
+    },
     typography: {
       fontFamily: "Roboto, sans-serif",
       fontSize: 13,
@@ -15,7 +39,7 @@ export const generateTheme = (theme: Theme, darkMode: boolean) =>
               color: darkMode ? "white" : "black",
             },
             "&.Mui-selected": {
-              backgroundColor: theme?.palette?.primary?.main,
+              backgroundColor: theme.palette.primary.main,
               color: "white",
               ".listIcon": {
                 color: "white",
@@ -52,10 +76,5 @@ export const generateTheme = (theme: Theme, darkMode: boolean) =>
         },
       },
     },
-    palette: {
-      mode: darkMode ? "dark" : "light",
-      background: {
-        default: darkMode ? "#121212" : "#DADADA",
-      },
-    },
   })
+}

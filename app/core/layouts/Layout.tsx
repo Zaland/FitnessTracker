@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { Head } from "blitz"
 import { CssBaseline } from "@mui/material"
-import { useTheme, ThemeProvider } from "@mui/material/styles"
+import { ThemeProvider } from "@mui/material/styles"
 import { generateTheme } from "./theme"
 
 export type LayoutProps = {
@@ -11,8 +11,7 @@ export type LayoutProps = {
 }
 
 const Layout = ({ title, darkMode = false, children }: LayoutProps) => {
-  const theme = useTheme()
-  const newTheme = generateTheme(theme, darkMode)
+  const theme = generateTheme(darkMode)
 
   return (
     <>
@@ -25,7 +24,7 @@ const Layout = ({ title, darkMode = false, children }: LayoutProps) => {
         />
       </Head>
 
-      <ThemeProvider theme={newTheme}>
+      <ThemeProvider theme={theme}>
         <CssBaseline />
         {children}
       </ThemeProvider>
