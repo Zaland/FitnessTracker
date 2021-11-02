@@ -6,12 +6,11 @@ import { generateTheme } from "./theme"
 
 export type LayoutProps = {
   title?: string
-  darkMode?: boolean
   children: ReactNode
 }
 
-const Layout = ({ title, darkMode = false, children }: LayoutProps) => {
-  const theme = generateTheme(darkMode)
+const Layout = ({ title, children }: LayoutProps) => {
+  const theme = generateTheme(JSON.parse(localStorage.getItem("darkMode") || "false") || false)
 
   return (
     <>
