@@ -10,7 +10,9 @@ export type LayoutProps = {
 }
 
 const Layout = ({ title, children }: LayoutProps) => {
-  const theme = generateTheme(JSON.parse(localStorage.getItem("darkMode") || "false") || false)
+  const darkMode =
+    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("darkMode") || "false") : false
+  const theme = generateTheme(darkMode)
 
   return (
     <>
