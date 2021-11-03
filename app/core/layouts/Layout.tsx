@@ -1,17 +1,21 @@
-import { ReactNode } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Head } from "blitz"
 import { CssBaseline } from "@mui/material"
 import { ThemeProvider } from "@mui/material/styles"
 import { generateTheme } from "./theme"
+import { Loader } from "../components/Loader"
 
 export type LayoutProps = {
   title?: string
+  darkMode?: boolean
   children: ReactNode
 }
 
-const Layout = ({ title, children }: LayoutProps) => {
-  const darkMode =
-    typeof window !== "undefined" ? JSON.parse(localStorage.getItem("darkMode") || "false") : false
+const Layout = ({ title, darkMode = false, children }: LayoutProps) => {
+  const [isFetching, setIsFetching] = useState(true)
+
+  useEffect(() => setIsFetching(false), [])
+
   const theme = generateTheme(darkMode)
 
   return (
@@ -25,10 +29,14 @@ const Layout = ({ title, children }: LayoutProps) => {
         />
       </Head>
 
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        {children}
-      </ThemeProvider>
+      {isFetching ? (
+        <Loader />
+      ) : (
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          {children}
+        </ThemeProvider>
+      )}
     </>
   )
 }

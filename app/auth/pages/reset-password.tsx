@@ -3,7 +3,7 @@ import { Grid, TextField, Link, Typography, Container, Alert, Paper } from "@mui
 import { LoadingButton } from "@mui/lab"
 import { Form, FormikProvider, useFormik } from "formik"
 import { BlitzPage, useRouterQuery, useMutation, useRouter, Routes, validateZodSchema } from "blitz"
-import Layout from "app/core/layouts/Layout"
+import UnauthorizedLayout from "app/core/layouts/UnauthorizedLayout"
 import { ResetPassword } from "app/auth/validations"
 import resetPassword from "app/auth/mutations/resetPassword"
 
@@ -119,6 +119,8 @@ const ResetPasswordPage: BlitzPage = () => {
 }
 
 ResetPasswordPage.redirectAuthenticatedTo = "/"
-ResetPasswordPage.getLayout = (page) => <Layout title="Reset password">{page}</Layout>
+ResetPasswordPage.getLayout = (page) => (
+  <UnauthorizedLayout title="Reset password">{page}</UnauthorizedLayout>
+)
 
 export default ResetPasswordPage

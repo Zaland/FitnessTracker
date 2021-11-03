@@ -1,6 +1,7 @@
 import { useEffect, Suspense } from "react"
 import { useSession, Routes, useRouter } from "blitz"
-import Layout from "app/core/layouts/Layout"
+import UnauthorizedLayout from "app/core/layouts/UnauthorizedLayout"
+import { Loader } from "app/core/components/Loader"
 
 const Route = () => {
   const router = useRouter()
@@ -19,13 +20,13 @@ const Route = () => {
 
 const MainPage = () => {
   return (
-    <Suspense fallback="Loading...">
+    <Suspense fallback={Loader}>
       <Route />
     </Suspense>
   )
 }
 
 MainPage.suppressFirstRenderFlicker = true
-MainPage.getLayout = (page) => <Layout title="Main">{page}</Layout>
+MainPage.getLayout = (page) => <UnauthorizedLayout title="Main">{page}</UnauthorizedLayout>
 
 export default MainPage
