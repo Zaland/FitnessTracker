@@ -56,7 +56,8 @@ export const AddWeight = (props: AddWeightProps) => {
   }
   const handleClose = () => setOpen(false)
 
-  console.log({ values })
+  const handleToggle = (event) =>
+    setFieldValue("isTypePounds", event.target.value === "lb" ? true : false)
 
   return (
     <>
@@ -100,9 +101,7 @@ export const AddWeight = (props: AddWeightProps) => {
                       color="primary"
                       sx={{ marginTop: 2.5 }}
                       value={values.isTypePounds ? "lb" : "kg"}
-                      onChange={(event) =>
-                        setFieldValue("isTypePounds", event.target.value === "lb" ? true : false)
-                      }
+                      onChange={handleToggle}
                     >
                       <ToggleButton value="lb" defaultChecked>
                         lb
