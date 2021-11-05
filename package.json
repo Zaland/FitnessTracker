@@ -27,7 +27,7 @@
   "dependencies": {
     "@emotion/react": "11.4.1",
     "@emotion/styled": "11.3.0",
-    "@mui/lab": "5.0.0-alpha.50",
+    "@mui/lab": "5.0.0-alpha.53",
     "@mui/material": "5.0.3",
     "@mui/styles": "5.0.1",
     "@prisma/client": "3.2.1",
@@ -37,8 +37,8 @@
     "eslint-plugin-react": "7.26.1",
     "formik": "2.2.9",
     "lodash-es": "4.17.21",
-    "react": "alpha",
-    "react-dom": "alpha",
+    "react": "18.0.0-alpha-ee069065d-20211105",
+    "react-dom": "18.0.0-alpha-ee069065d-20211105",
     "zod": "3.9.8"
   },
   "devDependencies": {
