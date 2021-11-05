@@ -1,10 +1,15 @@
 import { Suspense } from "react"
 import { BlitzPage, Routes } from "blitz"
-import AuthorizedLayout from "app/core/layouts/AuthorizedLayout"
 import { Loader } from "app/core/components/Loader"
+import { Weight } from "app/core/components/Weight"
+import AuthorizedLayout from "app/core/layouts/AuthorizedLayout"
 
 const WeightPage: BlitzPage = () => {
-  return <Suspense fallback={<Loader top="50%" left="55%" />}>This is the weight page</Suspense>
+  return (
+    <Suspense fallback={<Loader top="50%" left="55%" />}>
+      <Weight />
+    </Suspense>
+  )
 }
 
 WeightPage.authenticate = { redirectTo: Routes.LoginPage() }
