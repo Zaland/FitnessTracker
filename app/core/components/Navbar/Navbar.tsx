@@ -25,6 +25,7 @@ import {
   Moon as MoonIcon,
   ProfileCircle as ProfileIcon,
   Sun as SunIcon,
+  Watch as WatchIcon,
   Weight as WeightIcon,
 } from "app/assets/icons"
 
@@ -36,6 +37,7 @@ export type NavbarProps = {
 
 const listItems = [
   { label: "home", icon: <HouseIcon />, route: Routes.HomePage() },
+  { label: "weight", icon: <WeightIcon />, route: Routes.WeightPage() },
   {
     label: "profile",
     icon: <ProfileIcon />,
@@ -76,7 +78,7 @@ export const Navbar = ({ darkMode, onThemeChange, children }: NavbarProps) => {
       <DrawerHeader>
         {open && (
           <Typography noWrap component="div" color="primary" sx={{ fontWeight: 600, fontSize: 18 }}>
-            <WeightIcon color="primary" sx={{ mb: -0.5, mr: 1 }} />
+            <WatchIcon color="primary" sx={{ mb: -0.5, mr: 1 }} />
             FitnessTracker
           </Typography>
         )}
@@ -134,7 +136,7 @@ export const Navbar = ({ darkMode, onThemeChange, children }: NavbarProps) => {
           </IconButton>
           {!open && (
             <Typography noWrap component="div" sx={{ fontWeight: 600, fontSize: 18 }}>
-              <WeightIcon htmlColor="white" sx={{ mb: -0.5, mr: 1 }} />
+              <WatchIcon htmlColor="white" sx={{ mb: -0.5, mr: 1 }} />
               FitnessTracker
             </Typography>
           )}
