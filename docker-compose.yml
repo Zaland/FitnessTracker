@@ -2,6 +2,8 @@ version: "3.7"
 
 services:
   db:
+    network_mode: "host"
+    container_name: fitness-tracker-db
     image: postgres:latest
     volumes:
       - data:/var/lib/postgresql/data
@@ -10,10 +12,12 @@ services:
       - "5432:5432"
 
   db-test:
+    network_mode: "host"
+    container_name: fitness-tracker-db-test
     image: postgres:latest
     env_file: ./.env.test.local
     ports:
-      - 5433:5432
+      - "5433:5433"
 
 volumes:
   data:
