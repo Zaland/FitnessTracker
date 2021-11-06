@@ -15,7 +15,7 @@ import { validateZodSchema, useQuery, useMutation } from "blitz"
 import { Form, FormikProvider, useFormik } from "formik"
 import { ProfileForm as UpdateForm } from "app/core/validations"
 import { AutoSave } from "app/core/components/Form"
-import getCurrentUser from "app/users/queries/getCurrentUser"
+import getCurrentUser from "app/queries/getCurrentUser"
 import updateUser from "app/core/mutations/updateUser"
 
 type ProfileFormProps = {
