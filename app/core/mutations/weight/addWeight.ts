@@ -9,7 +9,7 @@ export default resolver.pipe(
     if (session.userId) {
       const weight = await db.weight.create({
         data: { ...data, userId: session.userId },
-        select: { id: true, amount: true, logDate: true },
+        select: { id: true, amount: true, isTypePounds: true, logDate: true },
       })
       return weight
     }

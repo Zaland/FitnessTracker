@@ -14,10 +14,11 @@ import { LocalizationProvider, DatePicker, LoadingButton } from "@mui/lab"
 import DateAdapter from "@mui/lab/AdapterDateFns"
 import { Form, FormikProvider, useFormik } from "formik"
 import { WeightForm } from "app/core/validations"
-import addWeight from "app/core/mutations/addWeight"
+import addWeight from "app/core/mutations/weight/addWeight"
 
 type AddWeightProps = {
   onSuccess?: () => void
+  onFetchWeights: () => void
 }
 
 type FormValues = {
@@ -26,7 +27,7 @@ type FormValues = {
   logDate: Date
 }
 
-export const AddWeight = (props: AddWeightProps) => {
+export const AddWeight = ({ onSuccess, onFetchWeights }: AddWeightProps) => {
   const [open, setOpen] = useState(false)
   const [toaster, setToaster] = useState({ type: "", message: "" })
   const [addWeightMutation] = useMutation(addWeight)
@@ -37,10 +38,11 @@ export const AddWeight = (props: AddWeightProps) => {
     onSubmit: async (values, { resetForm }) => {
       try {
         await addWeightMutation(values)
+        onFetchWeights()
         resetForm()
         console.log("success", values)
         handleOpen("success", "Successfully updated.")
-        props.onSuccess?.()
+        onSuccess?.()
       } catch (error) {
         console.log({ error })
         handleOpen("error", "Sorry, something went wrong.")
