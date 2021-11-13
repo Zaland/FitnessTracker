@@ -88,6 +88,7 @@ export const AddWeight = ({ onSuccess, onFetchWeights }: AddWeightProps) => {
                       type="number"
                       InputLabelProps={{ shrink: true }}
                       value={values.amount}
+                      onFocus={(event) => event.target.select()}
                       onChange={(event) => {
                         const num = Number(event.target.value)
                         if (num) {
