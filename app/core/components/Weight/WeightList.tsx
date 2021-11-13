@@ -121,11 +121,13 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
             <TableHead>
               <TableRow>
                 <TableCell padding="checkbox">
-                  <Checkbox
-                    indeterminate={selected.length > 0 && selected.length < weights.length}
-                    onChange={handleSelectAll}
-                    checked={weights.length > 0 && selected.length === weights.length}
-                  />
+                  {weights.length > 1 && (
+                    <Checkbox
+                      indeterminate={selected.length > 0 && selected.length < weights.length}
+                      onChange={handleSelectAll}
+                      checked={weights.length > 0 && selected.length === weights.length}
+                    />
+                  )}
                 </TableCell>
                 <TableCell align="center">
                   <TableSortLabel
