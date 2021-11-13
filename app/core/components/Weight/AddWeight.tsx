@@ -78,43 +78,7 @@ export const AddWeight = ({ onSuccess, onFetchWeights }: AddWeightProps) => {
         <FormikProvider value={formik}>
           <Form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={4}>
-              <Grid item sm={7}>
-                <Grid container spacing={2}>
-                  <Grid item sm={8}>
-                    <TextField
-                      margin="normal"
-                      fullWidth
-                      label="Weight"
-                      type="number"
-                      InputLabelProps={{ shrink: true }}
-                      value={values.amount}
-                      onFocus={(event) => event.target.select()}
-                      onChange={(event) => {
-                        const num = Number(event.target.value)
-                        if (num) {
-                          setFieldValue("amount", num)
-                        }
-                      }}
-                    />
-                  </Grid>
-                  <Grid item sm={4}>
-                    <ToggleButtonGroup
-                      fullWidth
-                      exclusive
-                      color="primary"
-                      sx={{ marginTop: 2.5 }}
-                      value={values.isTypePounds ? "lb" : "kg"}
-                      onChange={handleToggle}
-                    >
-                      <ToggleButton value="lb" defaultChecked>
-                        lb
-                      </ToggleButton>
-                      <ToggleButton value="kg">kg</ToggleButton>
-                    </ToggleButtonGroup>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid item sm={5}>
+              <Grid item xs={12} md={4}>
                 <LocalizationProvider dateAdapter={DateAdapter}>
                   <DatePicker
                     label="Date"
@@ -124,6 +88,38 @@ export const AddWeight = ({ onSuccess, onFetchWeights }: AddWeightProps) => {
                     onChange={(event) => setFieldValue("logDate", event)}
                   />
                 </LocalizationProvider>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  margin="normal"
+                  fullWidth
+                  label="Weight"
+                  type="number"
+                  InputLabelProps={{ shrink: true }}
+                  value={values.amount}
+                  onFocus={(event) => event.target.select()}
+                  onChange={(event) => {
+                    const num = Number(event.target.value)
+                    if (num) {
+                      setFieldValue("amount", num)
+                    }
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <ToggleButtonGroup
+                  fullWidth
+                  exclusive
+                  color="primary"
+                  sx={{ marginTop: 2.5 }}
+                  value={values.isTypePounds ? "lb" : "kg"}
+                  onChange={handleToggle}
+                >
+                  <ToggleButton value="lb" defaultChecked>
+                    lb
+                  </ToggleButton>
+                  <ToggleButton value="kg">kg</ToggleButton>
+                </ToggleButtonGroup>
               </Grid>
             </Grid>
             <LoadingButton
