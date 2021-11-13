@@ -102,7 +102,7 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
             </Typography>
           )}
           {selected.length === 1 && (
-            <Tooltip title="Edit">
+            <Tooltip title="Edit (Work in progress)">
               <IconButton>
                 <EditIcon />
               </IconButton>
