@@ -10,6 +10,8 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Toolbar,
+  Checkbox,
 } from "@mui/material"
 import { visuallyHidden } from "@mui/utils"
 import { format, compareAsc, compareDesc } from "date-fns"
@@ -24,13 +26,12 @@ type WeightListProps = {
 export const WeightList = ({ weights }: WeightListProps) => {
   const [order, setOrder] = useState<Order>("desc")
   const [orderBy, setOrderBy] = useState<keyof WeightProps>("logDate")
+  const [selected, setSelected] = useState<number[]>([])
 
-  const handleTableSort = (_event: React.MouseEvent<unknown>, property: keyof WeightProps) => {
+  const handleTableSort = (property: keyof WeightProps) => {
     const isAsc = orderBy === property && order === "asc"
 
     weights.sort((weight1, weight2) => {
-      console.log({ weight1, weight2 })
-
       if (property === "logDate") {
         return isAsc
           ? compareDesc(weight1.logDate, weight2.logDate)
@@ -44,21 +45,45 @@ export const WeightList = ({ weights }: WeightListProps) => {
     setOrderBy(property)
   }
 
+  const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      const newSelecteds = weights.map((item) => item.id)
+      setSelected(newSelecteds)
+      return
+    }
+    setSelected([])
+  }
+
+  const handleClick = (id: number) => {
+    const newList =
+      selected.indexOf(id) !== -1 ? selected.filter((item) => item !== id) : [...selected, id]
+    setSelected(newList)
+  }
+
   return (
     <>
-      <Paper elevation={3} sx={{ padding: 3, width: "100%", mt: 3 }}>
-        <Typography component="h1" variant="h5" align="center">
-          Weight list
-        </Typography>
-        <TableContainer component={Paper} elevation={5} sx={{ marginTop: 2 }}>
+      <Paper elevation={3} sx={{ width: "100%", mt: 3 }}>
+        <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
+          <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
+            Weight list
+          </Typography>
+        </Toolbar>
+        <TableContainer>
           <Table aria-label="table">
             <TableHead>
               <TableRow>
+                <TableCell padding="checkbox">
+                  <Checkbox
+                    indeterminate={selected.length > 0 && selected.length < weights.length}
+                    onChange={handleSelectAll}
+                    checked={weights.length > 0 && selected.length === weights.length}
+                  />
+                </TableCell>
                 <TableCell align="center">
                   <TableSortLabel
                     active={orderBy === "logDate"}
                     direction={orderBy === "logDate" ? order : "asc"}
-                    onClick={(event) => handleTableSort(event, "logDate")}
+                    onClick={() => handleTableSort("logDate")}
                   >
                     Date
                     {orderBy === "logDate" ? (
@@ -72,7 +97,7 @@ export const WeightList = ({ weights }: WeightListProps) => {
                   <TableSortLabel
                     active={orderBy === "amount"}
                     direction={orderBy === "amount" ? order : "asc"}
-                    onClick={(event) => handleTableSort(event, "amount")}
+                    onClick={() => handleTableSort("amount")}
                   >
                     Weight
                     {orderBy === "amount" ? (
@@ -89,8 +114,12 @@ export const WeightList = ({ weights }: WeightListProps) => {
                 <TableRow
                   hover
                   key={row.id}
+                  onClick={() => handleClick(row.id)}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
+                  <TableCell padding="checkbox">
+                    <Checkbox checked={selected.indexOf(row.id) !== -1} />
+                  </TableCell>
                   <TableCell align="center" component="th" scope="row">
                     {format(row.logDate, "LLL d, yyyy")}
                   </TableCell>
