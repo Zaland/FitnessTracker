@@ -12,21 +12,29 @@ import {
   TableRow,
   Toolbar,
   Checkbox,
+  Tooltip,
+  IconButton,
 } from "@mui/material"
+import { alpha } from "@mui/material/styles"
 import { visuallyHidden } from "@mui/utils"
+import { useMutation } from "blitz"
 import { format, compareAsc, compareDesc } from "date-fns"
+import { Edit as EditIcon, Delete as DeleteIcon } from "app/assets/icons"
 import { WeightProps } from "./Weight"
+import deleteWeight from "app/core/mutations/weight/deleteWeights"
 
 type Order = "asc" | "desc"
 
 type WeightListProps = {
   weights: WeightProps[]
+  onFetchWeights: () => void
 }
 
-export const WeightList = ({ weights }: WeightListProps) => {
+export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
   const [order, setOrder] = useState<Order>("desc")
   const [orderBy, setOrderBy] = useState<keyof WeightProps>("logDate")
   const [selected, setSelected] = useState<number[]>([])
+  const [deleteWeightMutation] = useMutation(deleteWeight)
 
   const handleTableSort = (property: keyof WeightProps) => {
     const isAsc = orderBy === property && order === "asc"
@@ -60,13 +68,53 @@ export const WeightList = ({ weights }: WeightListProps) => {
     setSelected(newList)
   }
 
+  const handleDeleteWeights = async () => {
+    await deleteWeightMutation(selected)
+    setSelected([])
+    onFetchWeights()
+  }
+
   return (
     <>
       <Paper elevation={3} sx={{ width: "100%", mt: 3 }}>
-        <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
-          <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
-            Weight list
-          </Typography>
+        <Toolbar
+          sx={{
+            pl: { sm: 2 },
+            pr: { xs: 1, sm: 1 },
+            ...(selected.length > 0 && {
+              bgcolor: (theme) =>
+                alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            }),
+          }}
+        >
+          {selected.length > 0 ? (
+            <Typography
+              sx={{ flex: "1 1 100%" }}
+              color="inherit"
+              variant="subtitle1"
+              component="div"
+            >
+              {selected.length} selected
+            </Typography>
+          ) : (
+            <Typography sx={{ flex: "1 1 100%" }} variant="h6" id="tableTitle" component="div">
+              Weights
+            </Typography>
+          )}
+          {selected.length === 1 && (
+            <Tooltip title="Edit">
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          {selected.length > 0 && (
+            <Tooltip title="Delete">
+              <IconButton onClick={handleDeleteWeights}>
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
+          )}
         </Toolbar>
         <TableContainer>
           <Table aria-label="table">
@@ -131,6 +179,11 @@ export const WeightList = ({ weights }: WeightListProps) => {
             </TableBody>
           </Table>
         </TableContainer>
+        {!weights.length && (
+          <Typography align="center" sx={{ padding: 2.5 }}>
+            No data to display!
+          </Typography>
+        )}
       </Paper>
     </>
   )

@@ -34,7 +34,7 @@ export const Weight = () => {
     <Container fixed maxWidth="md">
       <Grid container justifyContent="center" alignItems="center">
         <AddWeight onFetchWeights={handleFetchWeights} />
-        <WeightList weights={weights} />
+        <WeightList weights={weights} onFetchWeights={handleFetchWeights} />
       </Grid>
     </Container>
   )
