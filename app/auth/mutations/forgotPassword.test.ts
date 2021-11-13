@@ -9,6 +9,7 @@ beforeEach(async () => {
 
 const generatedToken = "plain-token"
 jest.mock("blitz", () => ({
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   ...jest.requireActual<Record<string, unknown>>("blitz")!,
   generateToken: () => generatedToken,
 }))

@@ -17,6 +17,7 @@ export const authenticateUser = async (rawEmail: string, rawPassword: string) =>
     await db.user.update({ where: { id: user.id }, data: { hashedPassword: improvedHash } })
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { hashedPassword, ...rest } = user
   return rest
 }

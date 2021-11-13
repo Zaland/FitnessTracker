@@ -6,6 +6,7 @@ beforeEach(async () => {
   await db.$reset()
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mockCtx: any = {
   session: {
     $create: jest.fn,
@@ -75,6 +76,7 @@ describe("resetPassword mutation", () => {
 
     // Updates user's password
     const updatedUser = await db.user.findFirst({ where: { id: user.id } })
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     expect(await SecurePassword.verify(updatedUser!.hashedPassword, newPassword)).toBe(
       SecurePassword.VALID
     )
