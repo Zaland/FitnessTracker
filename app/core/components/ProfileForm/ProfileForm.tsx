@@ -1,16 +1,14 @@
-import { useState } from "react"
 import {
   TextField,
   Grid,
   Typography,
   Container,
-  Alert,
   Paper,
   CircularProgress,
   InputAdornment,
-  Snackbar,
 } from "@mui/material"
 import { LoadingButton } from "@mui/lab"
+import { useSnackbar } from "notistack"
 import { validateZodSchema, useQuery, useMutation } from "blitz"
 import { Form, FormikProvider, useFormik } from "formik"
 import { ProfileForm as UpdateForm } from "app/core/validations"
@@ -28,10 +26,9 @@ type FormValues = {
 }
 
 export const ProfileForm = (props: ProfileFormProps) => {
-  const [open, setOpen] = useState(false)
-  const [toaster, setToaster] = useState({ type: "", message: "" })
   const [user, { setQueryData }] = useQuery(getCurrentUser, null)
   const [updateUserMutation] = useMutation(updateUser)
+  const { enqueueSnackbar } = useSnackbar()
 
   const formik = useFormik<FormValues>({
     initialValues: { email: user?.email || "", name: user?.name || "" },
@@ -58,14 +55,14 @@ export const ProfileForm = (props: ProfileFormProps) => {
 
         const newValues = await updateUserMutation(valuesToUpdate)
         setQueryData(newValues)
-        handleOpen("success", "Successfully updated.")
+        enqueueSnackbar("Successfully updated.", { variant: "success" })
         props.onSuccess?.()
       } catch (error) {
         if (error.name === "EmailTakenError") {
           setErrors({ email: error.message })
-          handleOpen("error", error.message)
+          enqueueSnackbar(error.message, { variant: "error" })
         } else {
-          handleOpen("error", "Sorry, something went wrong.")
+          enqueueSnackbar("Sorry, something went wrong.", { variant: "error" })
         }
       }
     },
@@ -73,22 +70,8 @@ export const ProfileForm = (props: ProfileFormProps) => {
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps } = formik
 
-  const handleOpen = (type, message) => {
-    setToaster({ type, message })
-    setOpen(true)
-  }
-  const handleClose = () => setOpen(false)
-
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        onClose={handleClose}
-        autoHideDuration={6000}
-      >
-        <Alert severity={toaster.type === "success" ? "success" : "error"}>{toaster.message}</Alert>
-      </Snackbar>
       <Container fixed maxWidth="sm">
         <Grid container justifyContent="center" alignItems="center">
           <Paper elevation={3} sx={{ padding: 3, width: "100%" }}>

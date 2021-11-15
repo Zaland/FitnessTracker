@@ -1,17 +1,8 @@
-import { useState } from "react"
 import { validateZodSchema, useMutation } from "blitz"
-import {
-  TextField,
-  Grid,
-  Typography,
-  Paper,
-  ToggleButton,
-  ToggleButtonGroup,
-  Snackbar,
-  Alert,
-} from "@mui/material"
+import { TextField, Grid, Typography, Paper, ToggleButton, ToggleButtonGroup } from "@mui/material"
 import { LocalizationProvider, DatePicker, LoadingButton } from "@mui/lab"
 import DateAdapter from "@mui/lab/AdapterDateFns"
+import { useSnackbar } from "notistack"
 import { Form, FormikProvider, useFormik } from "formik"
 import { WeightForm } from "app/core/validations"
 import addWeight from "app/core/mutations/weight/addWeight"
@@ -28,9 +19,8 @@ type FormValues = {
 }
 
 export const AddWeight = ({ onSuccess, onFetchWeights }: AddWeightProps) => {
-  const [open, setOpen] = useState(false)
-  const [toaster, setToaster] = useState({ type: "", message: "" })
   const [addWeightMutation] = useMutation(addWeight)
+  const { enqueueSnackbar } = useSnackbar()
 
   const formik = useFormik<FormValues>({
     initialValues: { amount: 0, isTypePounds: true, logDate: new Date() },
@@ -40,37 +30,21 @@ export const AddWeight = ({ onSuccess, onFetchWeights }: AddWeightProps) => {
         await addWeightMutation(values)
         onFetchWeights()
         resetForm()
-        console.log("success", values)
-        handleOpen("success", "Successfully updated.")
+        enqueueSnackbar("Successfully updated.", { variant: "success" })
         onSuccess?.()
       } catch (error) {
-        console.log({ error })
-        handleOpen("error", "Sorry, something went wrong.")
+        enqueueSnackbar("Sorry, something went wrong.", { variant: "error" })
       }
     },
   })
 
   const { handleSubmit, isSubmitting, values, setFieldValue } = formik
 
-  const handleOpen = (type, message) => {
-    setToaster({ type, message })
-    setOpen(true)
-  }
-  const handleClose = () => setOpen(false)
-
   const handleToggle = (event) =>
     setFieldValue("isTypePounds", event.target.value === "lb" ? true : false)
 
   return (
     <>
-      <Snackbar
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        open={open}
-        onClose={handleClose}
-        autoHideDuration={6000}
-      >
-        <Alert severity={toaster.type === "success" ? "success" : "error"}>{toaster.message}</Alert>
-      </Snackbar>
       <Paper elevation={3} sx={{ padding: 3, width: "100%" }}>
         <Typography component="h1" variant="h5" align="center">
           Weight

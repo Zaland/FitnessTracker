@@ -18,11 +18,11 @@ import {
 } from "@mui/material"
 import { alpha } from "@mui/material/styles"
 import { visuallyHidden } from "@mui/utils"
+import { useSnackbar } from "notistack"
 import { useMutation } from "blitz"
 import { format, compareAsc, compareDesc } from "date-fns"
 import { Edit as EditIcon, Delete as DeleteIcon } from "app/assets/icons"
 import { WeightProps } from "./Weight"
-import { Loader } from "../Loader"
 import deleteWeight from "app/core/mutations/weight/deleteWeights"
 
 type Order = "asc" | "desc"
@@ -38,6 +38,7 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
   const [selected, setSelected] = useState<number[]>([])
   const [isFetching, setIsFetching] = useState(true)
   const [deleteWeightMutation] = useMutation(deleteWeight)
+  const { enqueueSnackbar } = useSnackbar()
 
   useEffect(() => {
     setIsFetching(false)
@@ -80,6 +81,7 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
     await deleteWeightMutation(selected)
     setSelected([])
     onFetchWeights()
+    enqueueSnackbar("Successfully deleted weights.", { variant: "success" })
     setIsFetching(false)
   }
 

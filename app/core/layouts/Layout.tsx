@@ -2,6 +2,7 @@ import { ReactNode, useEffect, useState } from "react"
 import { Head } from "blitz"
 import { CssBaseline } from "@mui/material"
 import { ThemeProvider } from "@mui/material/styles"
+import { SnackbarProvider } from "notistack"
 import { generateTheme } from "./theme"
 import { Loader } from "../components/Loader"
 
@@ -33,8 +34,10 @@ const Layout = ({ title, darkMode = false, children }: LayoutProps) => {
         <Loader />
       ) : (
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
+          <SnackbarProvider anchorOrigin={{ horizontal: "right", vertical: "top" }}>
+            <CssBaseline />
+            {children}
+          </SnackbarProvider>
         </ThemeProvider>
       )}
     </>
