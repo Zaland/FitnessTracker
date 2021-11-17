@@ -70,6 +70,7 @@ export const generateTheme = (darkMode: boolean) => {
         styleOverrides: {
           root: {
             "&:hover": {
+              color: theme.palette.mode === "dark" ? theme.palette.primary.dark : "white",
               backgroundColor: theme.palette.primary.dark,
             },
           },

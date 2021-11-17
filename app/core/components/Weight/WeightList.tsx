@@ -110,14 +110,14 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
           )}
           {selected.length === 1 && (
             <Tooltip title="Edit (Work in progress)">
-              <IconButton>
+              <IconButton color="inherit">
                 <EditIcon />
               </IconButton>
             </Tooltip>
           )}
           {selected.length > 0 && (
             <Tooltip title="Delete">
-              <IconButton onClick={handleDeleteWeights} disabled={isDeleting}>
+              <IconButton onClick={handleDeleteWeights} disabled={isDeleting} color="inherit">
                 {isDeleting ? <CircularProgress size="20px" /> : <DeleteIcon />}
               </IconButton>
             </Tooltip>
