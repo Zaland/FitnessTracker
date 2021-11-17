@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import {
   Typography,
   Paper,
@@ -36,13 +36,9 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
   const [order, setOrder] = useState<Order>("desc")
   const [orderBy, setOrderBy] = useState<keyof WeightProps>("logDate")
   const [selected, setSelected] = useState<number[]>([])
-  const [isFetching, setIsFetching] = useState(true)
+  const [isDeleting, setIsDeleting] = useState(false)
   const [deleteWeightMutation] = useMutation(deleteWeight)
   const { enqueueSnackbar } = useSnackbar()
-
-  useEffect(() => {
-    setIsFetching(false)
-  }, [])
 
   const handleTableSort = (property: keyof WeightProps) => {
     const isAsc = orderBy === property && order === "asc"
@@ -77,12 +73,12 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
   }
 
   const handleDeleteWeights = async () => {
-    setIsFetching(true)
+    setIsDeleting(true)
     await deleteWeightMutation(selected)
     setSelected([])
     onFetchWeights()
     enqueueSnackbar("Successfully deleted weights.", { variant: "success" })
-    setIsFetching(false)
+    setIsDeleting(false)
   }
 
   return (
@@ -121,8 +117,8 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
           )}
           {selected.length > 0 && (
             <Tooltip title="Delete">
-              <IconButton onClick={handleDeleteWeights}>
-                <DeleteIcon />
+              <IconButton onClick={handleDeleteWeights} disabled={isDeleting}>
+                {isDeleting ? <CircularProgress size="20px" /> : <DeleteIcon />}
               </IconButton>
             </Tooltip>
           )}
@@ -171,34 +167,28 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {!isFetching &&
-                weights.map((row) => (
-                  <TableRow
-                    hover
-                    key={row.id}
-                    onClick={() => handleClick(row.id)}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox checked={selected.indexOf(row.id) !== -1} />
-                    </TableCell>
-                    <TableCell align="center" component="th" scope="row">
-                      {format(row.logDate, "LLL d, yyyy")}
-                    </TableCell>
-                    <TableCell align="center">{`${row.amount} ${
-                      row.isTypePounds ? "lb" : "kg"
-                    }`}</TableCell>
-                  </TableRow>
-                ))}
+              {weights.map((row) => (
+                <TableRow
+                  hover
+                  key={row.id}
+                  onClick={() => handleClick(row.id)}
+                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                >
+                  <TableCell padding="checkbox">
+                    <Checkbox checked={selected.indexOf(row.id) !== -1} />
+                  </TableCell>
+                  <TableCell align="center" component="th" scope="row">
+                    {format(row.logDate, "LLL d, yyyy")}
+                  </TableCell>
+                  <TableCell align="center">{`${row.amount} ${
+                    row.isTypePounds ? "lb" : "kg"
+                  }`}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
-        {isFetching && (
-          <Box sx={{ padding: 5, textAlign: "center" }}>
-            <CircularProgress />
-          </Box>
-        )}
-        {!weights.length && !isFetching && (
+        {!weights.length && (
           <Typography align="center" sx={{ padding: 2.5 }}>
             No data to display!
           </Typography>
