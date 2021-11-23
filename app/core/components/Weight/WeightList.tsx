@@ -15,6 +15,7 @@ import {
   Tooltip,
   IconButton,
   CircularProgress,
+  Skeleton,
 } from "@mui/material"
 import { alpha } from "@mui/material/styles"
 import { visuallyHidden } from "@mui/utils"
@@ -58,6 +59,7 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
   }
 
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (isDeleting) return
     if (event.target.checked) {
       const newSelecteds = weights.map((item) => item.id)
       setSelected(newSelecteds)
@@ -67,6 +69,7 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
   }
 
   const handleClick = (id: number) => {
+    if (isDeleting) return
     const newList =
       selected.indexOf(id) !== -1 ? selected.filter((item) => item !== id) : [...selected, id]
     setSelected(newList)
@@ -175,14 +178,18 @@ export const WeightList = ({ weights, onFetchWeights }: WeightListProps) => {
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                 >
                   <TableCell padding="checkbox">
-                    <Checkbox checked={selected.indexOf(row.id) !== -1} />
+                    {isDeleting ? (
+                      <Skeleton />
+                    ) : (
+                      <Checkbox checked={selected.indexOf(row.id) !== -1} />
+                    )}
                   </TableCell>
                   <TableCell align="center" component="th" scope="row">
-                    {format(row.logDate, "LLL d, yyyy")}
+                    {isDeleting ? <Skeleton /> : format(row.logDate, "LLL d, yyyy")}
                   </TableCell>
-                  <TableCell align="center">{`${row.amount} ${
-                    row.isTypePounds ? "lb" : "kg"
-                  }`}</TableCell>
+                  <TableCell align="center">
+                    {isDeleting ? <Skeleton /> : `${row.amount} ${row.isTypePounds ? "lb" : "kg"}`}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
